@@ -1,0 +1,53 @@
+.sidebar-global-container {
+    width: 56px;
+    height: 768px;
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+    background: #649FBF;
+    border-radius: 0px 20px 20px 0px;
+}
+
+.sm-rectangle {
+    /* Rectangle 8 */
+    width: 56px;
+    height: 41px;
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 6.51%;
+    bottom: 88.15%;
+    background: #FFFFFF;
+}
+
+.icons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0px;
+    gap: 24px;
+    position: absolute;
+    left: 0%;
+    right: 21.43%;
+    top: 29.3%;
+    bottom: 30.08%;
+    /* background-color: #FFFFFF; */
+
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    cursor: pointer;
+}
