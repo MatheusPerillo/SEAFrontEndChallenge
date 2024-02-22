@@ -1,0 +1,66 @@
+.global-container {
+    width: 100%;
+    height: 100vh;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+.lateral-container {
+    width: 5%;
+    height: 100%;
+    /* background-color: cyan; */
+}
+
+.central-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* background-color: red; */
+}
+
+.topbar-container {
+    width: 100%;
+    height: 20%;
+    /* background-color: blue; */
+    padding-top: 24px;
+    padding-right: 24px;
+}
+
+.user-global-container {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    background-color: yellow;
+}
+
+.perfil-container {
+    width: 40%;
+    height: 100%;
+    /* background-color: blueviolet; */
+}
+
+.global-form-container {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: chocolate;
+
+}
+
+.form-container {
+    width: 100%;
+    height: 90%;
+    background-color: darkgreen;
+}
+
+.button-container {
+    width: 100%;
+    height: 10%;
+    /* background-color: deeppink; */
+}

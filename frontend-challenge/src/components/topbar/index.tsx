@@ -14,7 +14,7 @@ const Topbar = () => {
             </div>
             <div className="container-item-text">
               <p className="item-text">Item {index + 1}</p>
-              {/* <p className="text-status">Concluído</p> */}
+              <p className="text-status">Concluído</p>
             </div>
           </div>
         ))}
