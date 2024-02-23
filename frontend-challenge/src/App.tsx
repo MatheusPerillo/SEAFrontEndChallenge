@@ -3,10 +3,10 @@ import "./App.css";
 import Sidebar from "./components/sidebar";
 import Topbar from "./components/topbar";
 import { ReactComponent as BackgroundImage } from "./components/assets/BackgroundImage.svg";
-import Home from "./pages/home";
+import CreateUser from "./pages/createUser";
 
 function App() {
-  return <Home />;
+  return <CreateUser />;
 }
 
 export default App;
