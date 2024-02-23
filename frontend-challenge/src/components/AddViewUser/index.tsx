@@ -4,12 +4,24 @@ import "./styles.css";
 import { Switch } from "antd";
 import UserDescription from "./userDescription";
 
-const AddViewUser = () => {
+interface AddViewUserProps {
+  setSwitchState: (value: boolean) => void;
+}
+
+const AddViewUser: React.FC<AddViewUserProps> = ({ setSwitchState }) => {
+  const [isSwitchChecked, setIsSwitchChecked] = useState(false);
+
+  const handleSwitchChange = (checked: boolean) => {
+    setIsSwitchChecked(checked);
+    setSwitchState(checked);
+  };
+
   const [activeButton, setActiveButton] = useState("active");
 
   const handleClick = (buttonName: any) => {
     setActiveButton(buttonName);
   };
+
   return (
     <div className="add-view-global-container">
       <div className="header-container">
@@ -55,7 +67,12 @@ const AddViewUser = () => {
       </div>
       <div className="status-step-container">
         <p>A etapa está concluída?</p>
-        <Switch checkedChildren="Sim" unCheckedChildren="Não" />
+        <Switch
+          checkedChildren="Sim"
+          unCheckedChildren="Não"
+          checked={isSwitchChecked}
+          onChange={handleSwitchChange}
+        />
       </div>
     </div>
   );
