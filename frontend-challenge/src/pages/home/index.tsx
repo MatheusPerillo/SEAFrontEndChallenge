@@ -3,6 +3,7 @@ import Topbar from "../../components/topbar";
 import "./styles.css";
 import { ReactComponent as BackgroundImage } from "./components/assets/BackgroundImage.svg";
 import UserPerfil from "../../components/userPerfil";
+import AddViewUser from "../../components/AddViewUser";
 
 function Home() {
   return (
@@ -19,7 +20,9 @@ function Home() {
             <UserPerfil />
           </div>
           <div className="global-form-container">
-            <div className="form-container"></div>
+            <div className="form-container">
+              <AddViewUser />
+            </div>
             <div className="button-container"></div>
           </div>
         </div>
