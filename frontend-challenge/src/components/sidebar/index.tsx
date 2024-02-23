@@ -7,6 +7,7 @@ import { FaBell } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { BsDiagram3Fill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const icons = [
   FaRegBuilding,
@@ -18,11 +19,34 @@ const icons = [
 ];
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const [selectedIcon, setSelectedIcon] = useState<number>(1);
   const [hoveredIcon, setHoveredIcon] = useState<number | null>(null);
 
   const handleIconClick = (index: number) => {
     setSelectedIcon(index);
+    switch (index) {
+      case 0:
+        navigate("/items");
+        break;
+      case 1:
+        navigate("/create-user");
+        break;
+      case 2:
+        navigate("/equipes");
+        break;
+      case 3:
+        navigate("/notificacoes");
+        break;
+      case 4:
+        navigate("/restaurar");
+        break;
+      case 5:
+        navigate("/perfil");
+        break;
+      default:
+        break;
+    }
   };
 
   return (

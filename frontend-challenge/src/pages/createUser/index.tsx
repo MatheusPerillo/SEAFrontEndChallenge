@@ -7,7 +7,7 @@ import AddViewUser from "../../components/AddViewUser";
 import { useState } from "react";
 import EmBreve from "../../components/emBreve";
 
-function CreateUser() {
+export default function CreateUser() {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [isNextStepClicked, setIsNextStepClicked] = useState(false);
   const [currentItem, setCurrentItem] = useState(1);
@@ -112,5 +112,3 @@ function CreateUser() {
     </div>
   );
 }
-
-export default CreateUser;
