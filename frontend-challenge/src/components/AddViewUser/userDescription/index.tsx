@@ -1,14 +1,33 @@
+import React, { useState } from "react";
 import "./styles.css";
 import { BsThreeDots } from "react-icons/bs";
+import EditModal from "../../modalEdit";
 
 export interface IUserDescription {
   name: string;
   cpf: string;
   status: string;
   role: string;
+  onEditClick: () => void;
 }
 
-const UserDescription = ({ name, cpf, status, role }: IUserDescription) => {
+const UserDescription = ({
+  name,
+  cpf,
+  status,
+  role,
+  onEditClick,
+}: IUserDescription) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="user-view-description-global-container">
       <div className="user-data-container">
@@ -27,9 +46,12 @@ const UserDescription = ({ name, cpf, status, role }: IUserDescription) => {
           </div>
         </div>
       </div>
-      <div className="user-menu-options">
+      <div className="user-menu-options" onClick={handleOpenModal}>
         <BsThreeDots size={"1.5em"} color="white" />
       </div>
+      {isModalOpen && (
+        <EditModal onClose={handleCloseModal} onEditClick={onEditClick} />
+      )}
     </div>
   );
 };
