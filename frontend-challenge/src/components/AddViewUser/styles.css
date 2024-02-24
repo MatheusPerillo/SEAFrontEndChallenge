@@ -56,11 +56,11 @@
     font-weight: 400;
     font-family: 'Ubuntu', sans-serif;
     color: #649FBF;
+    transition: all 0.3s ease;
 }
 
 .add-button-text:hover {
     color: #ffffff;
-    transition: all 0.3s ease-in-out;
 }
 
 .filter-container {

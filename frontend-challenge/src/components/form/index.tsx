@@ -1,4 +1,4 @@
-import { Input, Radio, Select, Switch } from "antd";
+import { Checkbox, Input, Radio, Select, Switch } from "antd";
 import "./styles.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import React, { useState } from "react";
@@ -55,13 +55,13 @@ const Form = ({ setIsEditing }: IForm) => {
               <p>CPF</p>
             </div>
             <div className="user-input-form">
-              <Input placeholder="CPF" />
+              <Input placeholder="000.000.000-00" />
             </div>
             <div className="user-name-form-container">
               <p>RG</p>
             </div>
             <div className="user-input-form">
-              <Input placeholder="RF" />
+              <Input placeholder="0.000.000" />
             </div>
           </div>
           <div className="user-infos-second-container">
@@ -97,7 +97,36 @@ const Form = ({ setIsEditing }: IForm) => {
             </div>
           </div>
         </div>
-        <div className="user-security-equipment-container"></div>
+        <div className="user-security-equipment-container">
+          <div className="user-infos-equipment">
+            <div className="user-name-form-container">
+              <p>Quais EPIs o trabalhador usa na atividade?</p>
+            </div>
+            <div className="user-input-form">
+              <Checkbox>O trabalhador não usa EPI.</Checkbox>
+            </div>
+            <div className="user-description-security-container">
+              <div className="user-name-form-container">
+                <p>Selecione a atividade</p>
+              </div>
+              <div className="user-input-form">
+                <Select
+                  defaultValue="Escolha uma atividade"
+                  style={{ width: "100%" }}
+                  onChange={handleChange}
+                  options={[
+                    { value: "Cargo 1", label: "Cargo 1" },
+                    { value: "Cargo 2", label: "Cargo 2" },
+                    { value: "Cargo 3", label: "Cargo 3" },
+                  ]}
+                />
+              </div>
+            </div>
+            <div className="button-add-user-ativity-container">
+              <p>Adicionar outra atividade</p>
+            </div>
+          </div>
+        </div>
         <div className="user-health-container"></div>
         <div className="button-save-infos-container"></div>
       </div>
