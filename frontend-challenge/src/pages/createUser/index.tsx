@@ -6,11 +6,14 @@ import UserPerfil from "../../components/userPerfil";
 import AddViewUser from "../../components/AddViewUser";
 import { useState } from "react";
 import EmBreve from "../../components/emBreve";
+import Form from "../../components/form";
+import { Footer } from "antd/es/layout/layout";
 
 export default function CreateUser() {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [isNextStepClicked, setIsNextStepClicked] = useState(false);
   const [currentItem, setCurrentItem] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
   const [completedItems, setCompletedItems] = useState([
     false,
     false,
@@ -22,6 +25,10 @@ export default function CreateUser() {
     false,
     false,
   ]);
+
+  const onEditClick = () => {
+    setIsEditing(true);
+  };
 
   const handleNextStepClick = () => {
     if (currentItem <= 9) {
@@ -81,7 +88,14 @@ export default function CreateUser() {
               </div>
               <div className="global-form-container">
                 <div className="form-container">
-                  <AddViewUser setSwitchState={handleSwitchChange} />
+                  {isEditing ? (
+                    <Form setIsEditing={setIsEditing} />
+                  ) : (
+                    <AddViewUser
+                      setSwitchState={handleSwitchChange}
+                      onEditClick={onEditClick}
+                    />
+                  )}
                 </div>
               </div>
             </>
@@ -98,7 +112,7 @@ export default function CreateUser() {
               </button>
             )}
           </div>
-          <div className="next-button-container">
+          <Footer className="next-button-container">
             <button
               className={`button-next-step ${isSwitchChecked ? "enabled" : ""}`}
               disabled={!isSwitchChecked}
@@ -106,7 +120,7 @@ export default function CreateUser() {
             >
               <p>Próximo passo</p>
             </button>
-          </div>
+          </Footer>
         </div>
       </div>
     </div>

@@ -6,9 +6,13 @@ import UserDescription from "./userDescription";
 
 interface AddViewUserProps {
   setSwitchState: (value: boolean) => void;
+  onEditClick: () => void;
 }
 
-const AddViewUser: React.FC<AddViewUserProps> = ({ setSwitchState }) => {
+const AddViewUser: React.FC<AddViewUserProps> = ({
+  setSwitchState,
+  onEditClick,
+}) => {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
 
   const handleSwitchChange = (checked: boolean) => {
@@ -27,7 +31,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({ setSwitchState }) => {
       <div className="header-container">
         <p className="header-text">Funcionário(s)</p>
       </div>
-      <button className="add-button-global-container">
+      <button className="add-button-global-container" onClick={onEditClick}>
         <p className="add-button-text">+ Adicionar Funcionário</p>
       </button>
       <div className="filter-container">
@@ -63,6 +67,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({ setSwitchState }) => {
           cpf={"000.000.000-99"}
           status={"Ativo"}
           role={"Cargo 1"}
+          onEditClick={onEditClick}
         />
       </div>
       <div className="status-step-container">
