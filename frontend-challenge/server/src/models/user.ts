@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IUser extends Document {
   name: string;
   cpf: string;
+  gender: string;
   status: string;
   role: string;
   usesEPI: boolean;
@@ -16,6 +17,7 @@ export interface IUser extends Document {
 const UserSchema: Schema = new Schema({
   name: { type: String, required: true },
   cpf: { type: String, required: true },
+  gender: { type: String, required: true },
   status: { type: String, required: true },
   role: { type: String, required: true },
   usesEPI: { type: Boolean, required: true },

@@ -27,6 +27,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const UserSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     cpf: { type: String, required: true },
+    gender: { type: String, required: true },
     status: { type: String, required: true },
     role: { type: String, required: true },
     usesEPI: { type: Boolean, required: true },

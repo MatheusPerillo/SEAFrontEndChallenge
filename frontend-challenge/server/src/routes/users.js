@@ -48,6 +48,9 @@ router.patch("/:id", getUser, (req, res) => __awaiter(void 0, void 0, void 0, fu
     if (req.body.cpf != null) {
         res.locals.user.cpf = req.body.cpf;
     }
+    if (req.body.gender != null) {
+        res.locals.user.gender = req.body.gender;
+    }
     if (req.body.status != null) {
         res.locals.user.status = req.body.status;
     }
