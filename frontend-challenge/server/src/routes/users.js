@@ -74,7 +74,7 @@ router.patch("/:id", getUser, (req, res) => __awaiter(void 0, void 0, void 0, fu
 // Excluir um usuário específico por ID
 router.delete("/:id", getUser, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield res.locals.user.remove();
+        yield user_1.default.findByIdAndDelete(req.params.id);
         res.json({ message: "Usuário excluído" });
     }
     catch (err) {

@@ -63,7 +63,7 @@ router.patch("/:id", getUser, async (req: Request, res: Response) => {
 // Excluir um usuário específico por ID
 router.delete("/:id", getUser, async (req: Request, res: Response) => {
   try {
-    await res.locals.user.remove();
+    await User.findByIdAndDelete(req.params.id);
     res.json({ message: "Usuário excluído" });
   } catch (err: any) {
     res.status(500).json({ message: err.message });
@@ -81,6 +81,7 @@ async function getUser(req: Request, res: Response, next: NextFunction) {
   } catch (err: any) {
     return res.status(500).json({ message: err.message });
   }
+
   res.locals.user = user;
   next();
 }
