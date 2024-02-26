@@ -7,6 +7,7 @@ import AddViewUser from "../../components/AddViewUser";
 import { useState } from "react";
 import EmBreve from "../../components/emBreve";
 import Form from "../../components/form";
+import { Footer } from "antd/es/layout/layout";
 
 export default function CreateUser() {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
@@ -111,7 +112,7 @@ export default function CreateUser() {
               </button>
             )}
           </div>
-          <div className="next-button-container">
+          <Footer className="next-button-container">
             <button
               className={`button-next-step ${isSwitchChecked ? "enabled" : ""}`}
               disabled={!isSwitchChecked}
@@ -119,7 +120,7 @@ export default function CreateUser() {
             >
               <p>Próximo passo</p>
             </button>
-          </div>
+          </Footer>
         </div>
       </div>
     </div>
