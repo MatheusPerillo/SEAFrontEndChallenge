@@ -31,7 +31,6 @@ const EPISchema = new mongoose_1.Schema({
 const ActivitySchema = new mongoose_1.Schema({
     name: { type: String },
     EPIs: [EPISchema],
-    epiNames: [String],
 });
 const UserSchema = new mongoose_1.Schema({
     name: { type: String, required: true },

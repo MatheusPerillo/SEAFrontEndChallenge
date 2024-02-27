@@ -27,7 +27,6 @@ const EPISchema: Schema = new Schema({
 const ActivitySchema: Schema = new Schema({
   name: { type: String },
   EPIs: [EPISchema],
-  epiNames: [String],
 });
 
 const UserSchema: Schema = new Schema({

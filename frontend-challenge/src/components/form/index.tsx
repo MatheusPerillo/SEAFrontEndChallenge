@@ -6,6 +6,9 @@ import type { RadioChangeEvent } from "antd";
 import { PaperClipOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
 import type { CheckboxProps } from "antd";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IForm {
   setIsEditing: (value: boolean) => void;
@@ -30,6 +33,44 @@ const Form = ({ setIsEditing }: IForm) => {
   const [fileName, setFileName] = useState(
     "Apenas arquivos .jpeg, .jpg, .png ou .pdf"
   );
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [rg, setRg] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [gender, setGender] = useState(1);
+  const [status, setStatus] = useState(false);
+  const [role, setRole] = useState("");
+  const [usesEPI, setUsesEPI] = useState(false);
+  const [healthCertificate, setHealthCertificate] = useState("");
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const newUser = {
+      name: name,
+      cpf: cpf,
+      rg: rg,
+      dateOfBirth: dateOfBirth,
+      gender: gender === 1 ? "Feminino" : "Masculino",
+      status: status === false ? "Inativo" : "Ativo",
+      role: role,
+      usesEPI: usesEPI,
+      healthCertificate: healthCertificate,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:5000/users", newUser);
+
+      if (response.status === 200) {
+        toast.success("Usuário cadastrado com sucesso!");
+      } else {
+        toast.error("Ocorreu um erro ao cadastrar o usuário.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Ocorreu um erro ao cadastrar o usuário.");
+    }
+  };
 
   const handleBackClick = () => {
     setIsEditing(false);
@@ -95,7 +136,7 @@ const Form = ({ setIsEditing }: IForm) => {
   };
 
   return (
-    <form className="form-global-container">
+    <form className="form-global-container" onSubmit={handleSubmit}>
       <div className="form-header-container" onClick={handleBackClick}>
         <p className="form-header-text">
           <IoIosArrowRoundBack size="1.3em" color="white" /> Adicionar
@@ -108,7 +149,11 @@ const Form = ({ setIsEditing }: IForm) => {
             <p>O trabalhador está ativo ou inativo?</p>
           </div>
           <div className="switch-icon-container">
-            <Switch checkedChildren="Ativo" unCheckedChildren="Inativo" />
+            <Switch
+              checkedChildren="Ativo"
+              unCheckedChildren="Inativo"
+              onChange={(value) => setStatus(value)}
+            />
           </div>
         </div>
       </div>
@@ -119,19 +164,31 @@ const Form = ({ setIsEditing }: IForm) => {
               <p>Nome</p>
             </div>
             <div className="user-input-form">
-              <Input placeholder="Nome" />
+              <Input
+                placeholder="Nome"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div className="user-name-form-container">
               <p>CPF</p>
             </div>
             <div className="user-input-form">
-              <Input placeholder="000.000.000-00" />
+              <Input
+                placeholder="000.000.000-00"
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+              />
             </div>
             <div className="user-name-form-container">
               <p>RG</p>
             </div>
             <div className="user-input-form">
-              <Input placeholder="0.000.000" />
+              <Input
+                placeholder="0.000.000"
+                value={rg}
+                onChange={(e) => setRg(e.target.value)}
+              />
             </div>
           </div>
           <div className="user-infos-second-container">
@@ -139,7 +196,10 @@ const Form = ({ setIsEditing }: IForm) => {
               <p>Sexo</p>
             </div>
             <div className="user-input-form">
-              <Radio.Group onChange={onChange} value={value}>
+              <Radio.Group
+                onChange={(e) => setGender(e.target.value)}
+                value={gender}
+              >
                 <Radio value={1}>Feminino</Radio>
                 <Radio value={2}>Masculino</Radio>
               </Radio.Group>
@@ -148,7 +208,11 @@ const Form = ({ setIsEditing }: IForm) => {
               <p>Data de Nascimento</p>
             </div>
             <div className="user-input-form">
-              <Input placeholder="00/00/0000" />
+              <Input
+                placeholder="00/00/0000"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+              />
             </div>
             <div className="user-name-form-container">
               <p>Cargo</p>
@@ -157,7 +221,8 @@ const Form = ({ setIsEditing }: IForm) => {
               <Select
                 defaultValue="Escolha um cargo"
                 style={{ width: "100%" }}
-                onChange={handleChange}
+                value={role}
+                onChange={(value) => setRole(value)}
                 options={[
                   { value: "Cargo 1", label: "Cargo 1" },
                   { value: "Cargo 2", label: "Cargo 2" },
@@ -183,7 +248,13 @@ const Form = ({ setIsEditing }: IForm) => {
                 <p>Quais EPIs o trabalhador usa na atividade?</p>
               </div>
               <div className="user-question-checkbox">
-                <Checkbox onChange={onCheckedboxChange}>
+                <Checkbox
+                  checked={usesEPI}
+                  onChange={(e) => {
+                    setUsesEPI(e.target.checked);
+                    onCheckedboxChange(e);
+                  }}
+                >
                   O trabalhador não usa EPI.
                 </Checkbox>
               </div>
@@ -314,6 +385,7 @@ const Form = ({ setIsEditing }: IForm) => {
                 onChange={(e) => {
                   if (e.target.files) {
                     setFileName(e.target.files[0].name);
+                    setHealthCertificate(e.target.files[0].name);
                   }
                 }}
               />
