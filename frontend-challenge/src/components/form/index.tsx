@@ -95,7 +95,7 @@ const Form = ({ setIsEditing }: IForm) => {
   };
 
   return (
-    <div className="form-global-container">
+    <form className="form-global-container">
       <div className="form-header-container" onClick={handleBackClick}>
         <p className="form-header-text">
           <IoIosArrowRoundBack size="1.3em" color="white" /> Adicionar
@@ -321,10 +321,10 @@ const Form = ({ setIsEditing }: IForm) => {
           </div>
         )}
         <div className="button-save-infos-container">
-          <p>Salvar</p>
+          <button type="submit">Salvar</button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
