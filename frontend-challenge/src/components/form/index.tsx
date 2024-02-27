@@ -25,7 +25,6 @@ const Form = ({ setIsEditing }: IForm) => {
   const [atividades, setAtividades] = useState<Atividade[]>([
     { id: uuidv4(), epis: [{ id: uuidv4() }] },
   ]);
-  const [epis, setEpis] = useState<Epi[]>([{ id: uuidv4() }]);
   const [isEpiAdded, setIsEpiAdded] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [fileName, setFileName] = useState(
