@@ -37,6 +37,12 @@ router.patch("/:id", getUser, async (req: Request, res: Response) => {
   if (req.body.cpf != null) {
     res.locals.user.cpf = req.body.cpf;
   }
+  if (req.body.rg != null) {
+    res.locals.user.rg = req.body.rg;
+  }
+  if (req.body.dateOfBirth != null) {
+    res.locals.user.dateOfBirth = req.body.dateOfBirth;
+  }
   if (req.body.gender != null) {
     res.locals.user.gender = req.body.gender;
   }
@@ -53,7 +59,13 @@ router.patch("/:id", getUser, async (req: Request, res: Response) => {
     res.locals.user.healthCertificate = req.body.healthCertificate;
   }
   if (req.body.activities != null) {
-    res.locals.user.activities = req.body.activities;
+    res.locals.user.activities = req.body.activities.map((activity: any) => ({
+      name: activity.name,
+      EPIs: activity.EPIs.map((epi: any) => ({
+        name: epi.name,
+        CA: epi.CA,
+      })),
+    }));
   }
   try {
     const updatedUser = await res.locals.user.save();

@@ -24,19 +24,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
+const EPISchema = new mongoose_1.Schema({
+    name: { type: String },
+    CA: { type: String },
+});
+const ActivitySchema = new mongoose_1.Schema({
+    name: { type: String },
+    EPIs: [EPISchema],
+    epiNames: [String],
+});
 const UserSchema = new mongoose_1.Schema({
     name: { type: String, required: true },
     cpf: { type: String, required: true },
+    rg: { type: String, required: true },
+    dateOfBirth: { type: String, required: true },
     gender: { type: String, required: true },
     status: { type: String, required: true },
     role: { type: String, required: true },
     usesEPI: { type: Boolean, required: true },
-    healthCertificate: { type: String, required: true },
-    activities: [
-        {
-            name: { type: String, required: true },
-            EPIs: [{ type: String, required: true }],
-        },
-    ],
+    healthCertificate: { type: String },
+    activities: [ActivitySchema],
 });
 exports.default = mongoose_1.default.model("User", UserSchema);

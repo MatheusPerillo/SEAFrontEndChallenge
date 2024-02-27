@@ -48,6 +48,12 @@ router.patch("/:id", getUser, (req, res) => __awaiter(void 0, void 0, void 0, fu
     if (req.body.cpf != null) {
         res.locals.user.cpf = req.body.cpf;
     }
+    if (req.body.rg != null) {
+        res.locals.user.rg = req.body.rg;
+    }
+    if (req.body.dateOfBirth != null) {
+        res.locals.user.dateOfBirth = req.body.dateOfBirth;
+    }
     if (req.body.gender != null) {
         res.locals.user.gender = req.body.gender;
     }
@@ -64,7 +70,13 @@ router.patch("/:id", getUser, (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.locals.user.healthCertificate = req.body.healthCertificate;
     }
     if (req.body.activities != null) {
-        res.locals.user.activities = req.body.activities;
+        res.locals.user.activities = req.body.activities.map((activity) => ({
+            name: activity.name,
+            EPIs: activity.EPIs.map((epi) => ({
+                name: epi.name,
+                CA: epi.CA,
+            })),
+        }));
     }
     try {
         const updatedUser = yield res.locals.user.save();
