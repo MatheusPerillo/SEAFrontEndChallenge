@@ -5,9 +5,9 @@
 Projeto para visualizaçao, cadastro, ediçao e deleção de funcionários com sua(s) respectiva(s) atividade(s) e EPI(s).
 
 ## Stacks para desenvolvimento
-Frontend: React com Typescript
-Backend: Node com Typescript + Express
-Banco de dados: MongoDB e Mongoose como ODM (Object Document Mapper)
+- Frontend: React com Typescript
+- Backend: Node com Typescript + Express
+- Banco de dados: MongoDB e Mongoose como ODM (Object Document Mapper)
 
 ## Facilidades
 
