@@ -12,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 interface IForm {
   setIsEditing: (value: boolean) => void;
+  setIsAdding: (value: boolean) => void;
+  isAdding: boolean;
 }
 
 interface Epi {
@@ -24,7 +26,7 @@ interface Atividade {
   epis: Epi[];
 }
 
-const Form = ({ setIsEditing }: IForm) => {
+const Form = ({ setIsEditing, isAdding, setIsAdding }: IForm) => {
   const [atividades, setAtividades] = useState<Atividade[]>([
     { id: uuidv4(), epis: [{ id: uuidv4() }] },
   ]);
@@ -66,8 +68,67 @@ const Form = ({ setIsEditing }: IForm) => {
     }
   };
 
+  // const handleUpdate = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+
+  //   const updatedUser = {
+  //     name: name,
+  //     cpf: cpf,
+  //     rg: rg,
+  //     dateOfBirth: dateOfBirth,
+  //     gender: gender === 1 ? "Feminino" : "Masculino",
+  //     status: status === false ? "Inativo" : "Ativo",
+  //     role: role,
+  //     usesEPI: usesEPI,
+  //     healthCertificate: healthCertificate,
+  //   };
+
+  //   axios.put(`/user-update/${id}`, updatedUser)
+  //   .then(response => {
+  //     console.log(response.data);
+  //     setIsEditing(false);
+  //     setIsAdding(false);
+  //   })
+  //   .catch(error => {
+  //     console.error('Error:', error);
+  //   });
+
+  //   try {
+  //     const response = await axios.put(`http://localhost:5000/user-update/${id}`, updatedUser);
+  //     console.log(response.data);
+  //     setIsEditing(false);
+  //     setIsAdding(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // Suponha que 'id' é o ID do usuário que você deseja editar
+  axios
+    .get(`/user-update/:id`)
+    .then((response) => {
+      // 'response.data' é o objeto do usuário retornado pelo servidor
+      const user = response.data;
+
+      // Agora você pode usar os dados do usuário para preencher os estados do formulário
+      setName(user.name);
+      setCpf(user.cpf);
+      setRg(user.rg);
+      setDateOfBirth(user.dateOfBirth);
+      setGender(user.gender === "Feminino" ? 1 : 2); // Supondo que 1 é para 'Feminino' e 2 é para 'Masculino'
+      setStatus(user.status === "Ativo"); // Supondo que 'Ativo' é true e 'Inativo' é false
+      setRole(user.role);
+      setUsesEPI(user.usesEPI);
+      setHealthCertificate(user.healthCertificate);
+      setAtividades(user.activities);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
   const handleBackClick = () => {
     setIsEditing(false);
+    setIsAdding(false);
   };
 
   const [value, setValue] = useState(1);

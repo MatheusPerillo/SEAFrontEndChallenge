@@ -14,6 +14,7 @@ export default function CreateUser() {
   const [isNextStepClicked, setIsNextStepClicked] = useState(false);
   const [currentItem, setCurrentItem] = useState(1);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const [completedItems, setCompletedItems] = useState([
     false,
     false,
@@ -28,6 +29,12 @@ export default function CreateUser() {
 
   const onEditClick = () => {
     setIsEditing(true);
+    setIsAdding(false);
+  };
+
+  const onAddClick = () => {
+    setIsEditing(true);
+    setIsAdding(true);
   };
 
   const handleNextStepClick = () => {
@@ -89,11 +96,16 @@ export default function CreateUser() {
               <div className="global-form-container">
                 <div className="form-container">
                   {isEditing ? (
-                    <Form setIsEditing={setIsEditing} />
+                    <Form
+                      setIsAdding={setIsAdding}
+                      setIsEditing={setIsEditing}
+                      isAdding={isAdding}
+                    />
                   ) : (
                     <AddViewUser
                       setSwitchState={handleSwitchChange}
                       onEditClick={onEditClick}
+                      onAddClick={onAddClick}
                     />
                   )}
                 </div>

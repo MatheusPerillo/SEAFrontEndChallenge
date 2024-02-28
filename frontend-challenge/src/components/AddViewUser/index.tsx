@@ -9,11 +9,13 @@ import { IUser } from "../../../server/src/models/user";
 interface AddViewUserProps {
   setSwitchState: (value: boolean) => void;
   onEditClick: () => void;
+  onAddClick: () => void;
 }
 
 const AddViewUser: React.FC<AddViewUserProps> = ({
   setSwitchState,
   onEditClick,
+  onAddClick,
 }) => {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [activeButton, setActiveButton] = useState();
@@ -62,7 +64,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
       <div className="header-container">
         <p className="header-text">Funcionário(s)</p>
       </div>
-      <button className="add-button-global-container" onClick={onEditClick}>
+      <button className="add-button-global-container" onClick={onAddClick}>
         <p className="add-button-text">+ Adicionar Funcionário</p>
       </button>
       <div className="filter-container">
