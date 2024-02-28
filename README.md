@@ -19,6 +19,7 @@ Projeto para visualizaçao, cadastro, ediçao e deleção de funcionários com s
 - Poderia ter dado um pouco mais de atenção para a responsividade, principalmente na sidebar e nas etapas.
 - Implementar corretamente o cadastro de atividade e seu EPI.
   - A implementação dessa funcionalidade estava salvando no banco sempre o último criado, ou seja, está sobrevendo.
+- Implementar corretamente a edição de funcionário.
 
 ## Instalação
 
