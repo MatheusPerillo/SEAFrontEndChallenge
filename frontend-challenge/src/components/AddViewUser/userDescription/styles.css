@@ -15,6 +15,10 @@
 
 }
 
+.user-data-container[data-status="Inativo"] {
+    background-color: #F2F2F2;
+}
+
 .user-menu-options {
     width: 5%;
     height: 100%;

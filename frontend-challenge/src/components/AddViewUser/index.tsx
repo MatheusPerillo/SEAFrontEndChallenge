@@ -44,7 +44,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
   };
 
   const fetchUsers = async () => {
-    const response = await axios.get("http://localhost:5000/users"); // substitua 'http://localhost:5000/users' pela URL correta do seu servidor
+    const response = await axios.get("http://localhost:5000/users");
     return response.data;
   };
 
@@ -120,6 +120,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
               cpf={user.cpf}
               status={user.status}
               role={user.role}
+              _id={user._id}
               onEditClick={onEditClick}
             />
           ))}
