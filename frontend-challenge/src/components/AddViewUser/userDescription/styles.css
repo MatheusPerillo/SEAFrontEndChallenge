@@ -77,7 +77,7 @@
 }
 
 .user-status-job {
-    width: 7%;
+    width: auto;
     height: 75%;
     display: flex;
     align-items: center;
@@ -86,6 +86,8 @@
     background-color: #649FBF;
 
     p {
+        margin-left: 16px;
+        margin-right: 16px;
         font-family: 'Ubuntu', sans-serif;
         color: #FFFFFF;
         font-style: normal;
@@ -95,7 +97,7 @@
 }
 
 .user-status-role {
-    width: 9%;
+    width: auto;
     height: 75%;
     display: flex;
     align-items: center;
@@ -104,6 +106,8 @@
     background-color: #649FBF;
 
     p {
+        margin-left: 16px;
+        margin-right: 16px;
         font-family: 'Ubuntu', sans-serif;
         color: #FFFFFF;
         font-style: normal;
