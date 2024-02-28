@@ -30,6 +30,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
   const handleSwitchChange = (checked: boolean) => {
     setIsSwitchChecked(checked);
     setSwitchState(checked);
+    sessionStorage.setItem("isSwitchChecked", JSON.stringify(checked));
   };
 
   const handleClick = (buttonName: any) => {
@@ -47,6 +48,14 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
     const response = await axios.get("http://localhost:5000/users");
     return response.data;
   };
+
+  useEffect(() => {
+    const savedSwitchState = JSON.parse(
+      sessionStorage.getItem("isSwitchChecked") || "false"
+    );
+    setIsSwitchChecked(savedSwitchState);
+    setSwitchState(savedSwitchState);
+  }, [setSwitchState]);
 
   useEffect(() => {
     fetchUsers().then(setUsers);
