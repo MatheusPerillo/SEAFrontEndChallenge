@@ -115,12 +115,11 @@
     display: flex;
     justify-content: end;
     align-items: center;
-    background-color: #F2F2F2;
 }
 
 .button-next-step {
     width: 25%;
-    height: 85%;
+    height: 90%;
     border-radius: 10px;
     cursor: pointer;
     border: none;
@@ -136,6 +135,11 @@
         color: #ffffff;
     }
 }
+
+.button-next-step.form-visible {
+    height: 170%;
+}
+
 
 .button-next-step.enabled {
     background-color: #649FBF;

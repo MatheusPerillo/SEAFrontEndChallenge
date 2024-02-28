@@ -4,7 +4,7 @@ import "./styles.css";
 import { ReactComponent as BackgroundImage } from "./components/assets/BackgroundImage.svg";
 import UserPerfil from "../../components/userPerfil";
 import AddViewUser from "../../components/AddViewUser";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmBreve from "../../components/emBreve";
 import Form from "../../components/form";
 import { Footer } from "antd/es/layout/layout";
@@ -26,6 +26,7 @@ export default function CreateUser() {
     false,
     false,
   ]);
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   const onEditClick = () => {
     setIsEditing(true);
@@ -69,6 +70,10 @@ export default function CreateUser() {
       setCompletedItems(newCompletedItems);
     }
   };
+
+  useEffect(() => {
+    setIsFormVisible(isEditing);
+  }, [isEditing]);
 
   return (
     <div className="global-container">
@@ -126,7 +131,9 @@ export default function CreateUser() {
           </div>
           <Footer className="next-button-container">
             <button
-              className={`button-next-step ${isSwitchChecked ? "enabled" : ""}`}
+              className={`button-next-step ${
+                isSwitchChecked ? "enabled" : ""
+              } ${isFormVisible ? "form-visible" : ""}`}
               disabled={!isSwitchChecked}
               onClick={handleNextStepClick}
             >

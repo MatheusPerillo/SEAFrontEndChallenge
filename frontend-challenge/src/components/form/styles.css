@@ -450,6 +450,7 @@
     border: 1px solid #649FBF;
     border-radius: 10px;
     cursor: pointer;
+    background-color: #ffffff;
     transition: all 0.3s ease;
 
     p {

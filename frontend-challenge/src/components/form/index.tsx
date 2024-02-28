@@ -73,44 +73,44 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
     }
   };
 
-  const handleUpdate = async (event: React.FormEvent) => {
-    event.preventDefault();
+  // const handleUpdate = async (event: React.FormEvent) => {
+  //   event.preventDefault();
 
-    const updatedUser = {
-      name: name,
-      cpf: cpf,
-      rg: rg,
-      dateOfBirth: dateOfBirth,
-      gender: gender === 1 ? "Feminino" : "Masculino",
-      status: status === false ? "Inativo" : "Ativo",
-      role: role,
-      usesEPI: usesEPI,
-      healthCertificate: healthCertificate,
-    };
+  //   const updatedUser = {
+  //     name: name,
+  //     cpf: cpf,
+  //     rg: rg,
+  //     dateOfBirth: dateOfBirth,
+  //     gender: gender === 1 ? "Feminino" : "Masculino",
+  //     status: status === false ? "Inativo" : "Ativo",
+  //     role: role,
+  //     usesEPI: usesEPI,
+  //     healthCertificate: healthCertificate,
+  //   };
 
-    axios
-      .put(`/user-update/${_id}`, updatedUser)
-      .then((response) => {
-        console.log(response.data);
-        setIsEditing(false);
-        setIsAdding(false);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+  //   axios
+  //     .put(`/user-update/${_id}`, updatedUser)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setIsEditing(false);
+  //       setIsAdding(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //     });
 
-    try {
-      const response = await axios.put(
-        `http://localhost:5000/user-update/${_id}`,
-        updatedUser
-      );
-      console.log(response.data);
-      setIsEditing(false);
-      setIsAdding(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   try {
+  //     const response = await axios.put(
+  //       `http://localhost:5000/user-update/${_id}`,
+  //       updatedUser
+  //     );
+  //     console.log(response.data);
+  //     setIsEditing(false);
+  //     setIsAdding(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   axios
     .get(`/user-update/${_id}`)
@@ -453,9 +453,10 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
             </div>
           </div>
         )}
-        <div className="button-save-infos-container">
-          <button type="submit">Salvar</button>
-        </div>
+
+        <button className="button-save-infos-container" type="submit">
+          <p>Salvar</p>
+        </button>
       </div>
     </form>
   );

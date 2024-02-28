@@ -55,7 +55,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
     );
     setIsSwitchChecked(savedSwitchState);
     setSwitchState(savedSwitchState);
-  }, [setSwitchState]);
+  }, []);
 
   useEffect(() => {
     fetchUsers().then(setUsers);
