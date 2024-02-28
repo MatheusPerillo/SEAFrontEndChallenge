@@ -111,16 +111,16 @@
 
 .next-button-container {
     width: 50%;
-    height: 100%;
+    height: auto;
     display: flex;
     justify-content: end;
     align-items: center;
-    /* background-color: blueviolet; */
+    background-color: #F2F2F2;
 }
 
 .button-next-step {
     width: 25%;
-    height: 40%;
+    height: 85%;
     border-radius: 10px;
     cursor: pointer;
     border: none;
