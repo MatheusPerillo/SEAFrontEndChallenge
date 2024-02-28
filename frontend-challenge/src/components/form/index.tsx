@@ -60,15 +60,9 @@ const Form = ({ setIsEditing }: IForm) => {
 
     try {
       const response = await axios.post("http://localhost:5000/users", newUser);
-
-      if (response.status === 200) {
-        toast.success("Usuário cadastrado com sucesso!");
-      } else {
-        toast.error("Ocorreu um erro ao cadastrar o usuário.");
-      }
+      console.log(response.data);
     } catch (error) {
       console.error(error);
-      toast.error("Ocorreu um erro ao cadastrar o usuário.");
     }
   };
 
