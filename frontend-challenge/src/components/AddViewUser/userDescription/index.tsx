@@ -8,6 +8,7 @@ export interface IUserDescription {
   cpf: string;
   status: string;
   role: string;
+  _id: string;
   onEditClick: () => void;
 }
 
@@ -16,6 +17,7 @@ const UserDescription = ({
   cpf,
   status,
   role,
+  _id,
   onEditClick,
 }: IUserDescription) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +32,7 @@ const UserDescription = ({
 
   return (
     <div className="user-view-description-global-container">
-      <div className="user-data-container">
+      <div className="user-data-container" data-status={status}>
         <div className="user-name-container">
           <p>{name}</p>
         </div>
@@ -50,7 +52,11 @@ const UserDescription = ({
         <BsThreeDots size={"1.5em"} color="white" />
       </div>
       {isModalOpen && (
-        <EditModal onClose={handleCloseModal} onEditClick={onEditClick} />
+        <EditModal
+          onClose={handleCloseModal}
+          onEditClick={onEditClick}
+          _id={_id}
+        />
       )}
     </div>
   );
