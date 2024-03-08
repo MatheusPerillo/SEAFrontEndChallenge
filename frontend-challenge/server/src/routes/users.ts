@@ -29,52 +29,6 @@ router.get("/:id", getUser, (req: Request, res: Response) => {
   res.json(res.locals.user);
 });
 
-// Atualizar um usuário específico por ID
-// router.patch("/:id", getUser, async (req: Request, res: Response) => {
-//   if (req.body.name != null) {
-//     res.locals.user.name = req.body.name;
-//   }
-//   if (req.body.cpf != null) {
-//     res.locals.user.cpf = req.body.cpf;
-//   }
-//   if (req.body.rg != null) {
-//     res.locals.user.rg = req.body.rg;
-//   }
-//   if (req.body.dateOfBirth != null) {
-//     res.locals.user.dateOfBirth = req.body.dateOfBirth;
-//   }
-//   if (req.body.gender != null) {
-//     res.locals.user.gender = req.body.gender;
-//   }
-//   if (req.body.status != null) {
-//     res.locals.user.status = req.body.status;
-//   }
-//   if (req.body.role != null) {
-//     res.locals.user.role = req.body.role;
-//   }
-//   if (req.body.usesEPI != null) {
-//     res.locals.user.usesEPI = req.body.usesEPI;
-//   }
-//   if (req.body.healthCertificate != null) {
-//     res.locals.user.healthCertificate = req.body.healthCertificate;
-//   }
-//   if (req.body.activities != null) {
-//     res.locals.user.activities = req.body.activities.map((activity: any) => ({
-//       name: activity.name,
-//       EPIs: activity.EPIs.map((epi: any) => ({
-//         name: epi.name,
-//         CA: epi.CA,
-//       })),
-//     }));
-//   }
-//   try {
-//     const updatedUser = await res.locals.user.save();
-//     res.json(updatedUser);
-//   } catch (err: any) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });
-
 router.put("/user-update/:id", async (req, res) => {
   const { id } = req.params;
   const {
