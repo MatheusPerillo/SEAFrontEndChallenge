@@ -1,20 +1,34 @@
-import { Checkbox, Input, Radio, Select, Switch } from "antd";
-import "./styles.css";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { Checkbox, Input, Radio, Select, Switch } from "antd";
+import { IoIosArrowRoundBack } from "react-icons/io";
 import type { RadioChangeEvent } from "antd";
 import { PaperClipOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from "uuid";
 import type { CheckboxProps } from "antd";
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { userSlice } from "../../reducers/index";
 
-interface IForm {
-  setIsEditing: (value: boolean) => void;
-  setIsAdding: (value: boolean) => void;
-  isAdding: boolean;
+import "./styles.css";
+
+interface IEditForm {
   _id?: string;
+  setViewState: React.Dispatch<
+    React.SetStateAction<"AddViewUser" | "AddForm" | "EditForm">
+  >;
+}
+
+interface IEPI {
+  name?: string;
+  CA?: string;
+}
+
+interface IActivity {
+  name?: string;
+  EPIs?: IEPI[];
 }
 
 interface Epi {
@@ -27,7 +41,7 @@ interface Atividade {
   epis: Epi[];
 }
 
-const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
+const EditForm = ({ _id, setViewState }: IEditForm) => {
   const [atividades, setAtividades] = useState<Atividade[]>([
     { id: uuidv4(), epis: [{ id: uuidv4() }] },
   ]);
@@ -45,6 +59,10 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
   const [role, setRole] = useState("");
   const [usesEPI, setUsesEPI] = useState(false);
   const [healthCertificate, setHealthCertificate] = useState("");
+  const [activities, setActivities] = useState<IActivity[]>([]);
+
+  const { addUser, updateUser } = userSlice.actions;
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -59,6 +77,7 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
       role: role,
       usesEPI: usesEPI,
       healthCertificate: healthCertificate,
+      activities: activities,
     };
 
     try {
@@ -67,75 +86,14 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
       toast.success("Usuario cadastrado com sucesso!", {
         onClose: () => window.location.reload(),
       });
+      dispatch(addUser(newUser));
     } catch (error) {
       console.error(error);
       toast.error("Erro ao cadastrar usuário");
     }
   };
 
-  // const handleUpdate = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-
-  //   const updatedUser = {
-  //     name: name,
-  //     cpf: cpf,
-  //     rg: rg,
-  //     dateOfBirth: dateOfBirth,
-  //     gender: gender === 1 ? "Feminino" : "Masculino",
-  //     status: status === false ? "Inativo" : "Ativo",
-  //     role: role,
-  //     usesEPI: usesEPI,
-  //     healthCertificate: healthCertificate,
-  //   };
-
-  //   axios
-  //     .put(`/user-update/${_id}`, updatedUser)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setIsEditing(false);
-  //       setIsAdding(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-
-  //   try {
-  //     const response = await axios.put(
-  //       `http://localhost:5000/user-update/${_id}`,
-  //       updatedUser
-  //     );
-  //     console.log(response.data);
-  //     setIsEditing(false);
-  //     setIsAdding(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  axios
-    .get(`/user-update/${_id}`)
-    .then((response) => {
-      const user = response.data;
-
-      setName(user.name);
-      setCpf(user.cpf);
-      setRg(user.rg);
-      setDateOfBirth(user.dateOfBirth);
-      setGender(user.gender === "Feminino" ? 1 : 2);
-      setStatus(user.status === "Ativo");
-      setRole(user.role);
-      setUsesEPI(user.usesEPI);
-      setHealthCertificate(user.healthCertificate);
-      setAtividades(user.activities);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-
-  const handleBackClick = () => {
-    setIsEditing(false);
-    setIsAdding(false);
-  };
+  const handleBackClick = () => {};
 
   const [value, setValue] = useState(1);
 
@@ -198,10 +156,12 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
 
   return (
     <form className="form-global-container" onSubmit={handleSubmit}>
-      <div className="form-header-container" onClick={handleBackClick}>
+      <div
+        className="form-header-container"
+        onClick={() => setViewState("AddViewUser")}
+      >
         <p className="form-header-text">
-          <IoIosArrowRoundBack size="1.3em" color="white" /> Adicionar
-          Funcionário
+          <IoIosArrowRoundBack size="1.3em" color="black" /> Editar Funcionário
         </p>
       </div>
       <div className="switch-user-status-global-container">
@@ -462,4 +422,4 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
   );
 };
 
-export default Form;
+export default EditForm;

@@ -1,9 +1,27 @@
-// userReducer.ts
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../server/src/models/user";
+
+export interface IReduxUser {
+  _id?: string;
+  name: string;
+  cpf: string;
+  rg: string;
+  gender: string;
+  dateOfBirth: string;
+  status: string;
+  role: string;
+  usesEPI: boolean;
+  healthCertificate?: string;
+  activities?: Array<{
+    name?: string;
+    EPIs?: Array<{
+      name?: string;
+      CA?: string;
+    }>;
+  }>;
+}
 
 interface UserState {
-  users: IUser[];
+  users: IReduxUser[];
 }
 
 const initialState: UserState = {
@@ -14,10 +32,13 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    addUser: (state, action: PayloadAction<IUser>) => {
+    addUser: (state, action: PayloadAction<IReduxUser>) => {
       return { ...state, users: [...state.users, action.payload] };
     },
-    updateUser: (state, action: PayloadAction<IUser>) => {
+    addUsers: (state, action: PayloadAction<IReduxUser[]>) => {
+      return { ...state, users: [...state.users, ...action.payload] };
+    },
+    updateUser: (state, action: PayloadAction<IReduxUser>) => {
       return {
         ...state,
         users: state.users.map((user) =>
@@ -31,7 +52,7 @@ export const userSlice = createSlice({
         users: state.users.filter((user) => user._id !== action.payload),
       };
     },
-    setUsers: (state, action: PayloadAction<IUser[]>) => {
+    setsUsers: (state, action: PayloadAction<IReduxUser[]>) => {
       return { ...state, users: action.payload };
     },
   },

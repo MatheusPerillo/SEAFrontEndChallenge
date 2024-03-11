@@ -1,20 +1,21 @@
 import Sidebar from "../../components/sidebar";
 import Topbar from "../../components/topbar";
 import "./styles.css";
-import { ReactComponent as BackgroundImage } from "./components/assets/BackgroundImage.svg";
 import UserPerfil from "../../components/userPerfil";
 import AddViewUser from "../../components/AddViewUser";
 import { useEffect, useState } from "react";
 import EmBreve from "../../components/emBreve";
-import Form from "../../components/form";
 import { Footer } from "antd/es/layout/layout";
+import AddForm from "../../components/addForm";
+import EditForm from "../../components/editForm";
 
 export default function CreateUser() {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
-  const [isNextStepClicked, setIsNextStepClicked] = useState(false);
   const [currentItem, setCurrentItem] = useState(1);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [viewState, setViewState] = useState<
+    "AddViewUser" | "AddForm" | "EditForm"
+  >("AddViewUser");
   const [completedItems, setCompletedItems] = useState([
     false,
     false,
@@ -26,17 +27,6 @@ export default function CreateUser() {
     false,
     false,
   ]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
-
-  const onEditClick = () => {
-    setIsEditing(true);
-    setIsAdding(false);
-  };
-
-  const onAddClick = () => {
-    setIsEditing(true);
-    setIsAdding(true);
-  };
 
   const handleNextStepClick = () => {
     if (currentItem <= 9) {
@@ -71,9 +61,9 @@ export default function CreateUser() {
     }
   };
 
-  useEffect(() => {
-    setIsFormVisible(isEditing);
-  }, [isEditing]);
+  // useEffect(() => {
+  //   setIsFormVisible(isEditing);
+  // }, [isEditing]);
 
   return (
     <div className="global-container">
@@ -100,17 +90,16 @@ export default function CreateUser() {
               </div>
               <div className="global-form-container">
                 <div className="form-container">
-                  {isEditing ? (
-                    <Form
-                      setIsAdding={setIsAdding}
-                      setIsEditing={setIsEditing}
-                      isAdding={isAdding}
-                    />
-                  ) : (
+                  {viewState === "EditForm" && (
+                    <EditForm setViewState={setViewState} />
+                  )}
+                  {viewState === "AddForm" && (
+                    <AddForm setViewState={setViewState} />
+                  )}
+                  {viewState === "AddViewUser" && (
                     <AddViewUser
+                      setViewState={setViewState}
                       setSwitchState={handleSwitchChange}
-                      onEditClick={onEditClick}
-                      onAddClick={onAddClick}
                     />
                   )}
                 </div>
