@@ -161,7 +161,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
         onClick={() => setViewState("AddViewUser")}
       >
         <p className="form-header-text">
-          <IoIosArrowRoundBack size="1.3em" color="black" /> Editar Funcionário
+          <IoIosArrowRoundBack size="1.3em" color="white" /> Editar Funcionário
         </p>
       </div>
       <div className="switch-user-status-global-container">
