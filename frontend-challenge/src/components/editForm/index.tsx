@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { IReduxUser, userSlice } from "../../reducers/index";
 
 import "./styles.css";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
 interface IEditForm {
   _id?: string;
@@ -82,8 +83,8 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
     setDateOfBirth(event.target.value);
   };
 
-  const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGender(Number(event.target.value));
+  const handleGenderChange = (e: RadioChangeEvent) => {
+    setGender(Number(e.target.value));
   };
 
   const handleStatusChange = (checked: boolean) => {
@@ -94,14 +95,21 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
     setRole(value);
   };
 
-  const handleUsesEPIChange = (checked: boolean) => {
-    setUsesEPI(checked);
+  const onCheckedboxChange: CheckboxProps["onChange"] = (e) => {
+    setIsCheckboxChecked(e.target.checked);
+  };
+  const handleUsesEPIChange = (e: CheckboxChangeEvent) => {
+    setUsesEPI(e.target.checked);
+    onCheckedboxChange(e);
   };
 
   const handleHealthCertificateChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setHealthCertificate(event.target.value);
+    if (e.target.files) {
+      setFileName(e.target.files[0].name);
+      setHealthCertificate(e.target.files[0].name);
+    }
   };
 
   const handleActivitiesChange = (value: IActivity[]) => {
@@ -196,10 +204,6 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
     );
   };
 
-  const onCheckedboxChange: CheckboxProps["onChange"] = (e) => {
-    setIsCheckboxChecked(e.target.checked);
-  };
-
   return (
     <form className="form-global-container" onSubmit={handleSubmit}>
       <div
@@ -264,10 +268,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
               <p>Sexo</p>
             </div>
             <div className="user-input-form">
-              <Radio.Group
-                // onChange={handleGenderChange}
-                value={gender}
-              >
+              <Radio.Group onChange={handleGenderChange} value={gender}>
                 <Radio value={1}>Feminino</Radio>
                 <Radio value={2}>Masculino</Radio>
               </Radio.Group>
@@ -316,10 +317,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                 <p>Quais EPIs o trabalhador usa na atividade?</p>
               </div>
               <div className="user-question-checkbox">
-                <Checkbox
-                  checked={usesEPI}
-                  // onChange={handleUsesEPIChange}
-                >
+                <Checkbox checked={usesEPI} onChange={handleUsesEPIChange}>
                   O trabalhador não usa EPI.
                 </Checkbox>
               </div>
