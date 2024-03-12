@@ -10,7 +10,7 @@ import { PaperClipOutlined } from "@ant-design/icons";
 import type { CheckboxProps } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { userSlice } from "../../reducers/index";
+import { IReduxUser, userSlice } from "../../reducers/index";
 
 import "./styles.css";
 
@@ -61,46 +61,92 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
   const [healthCertificate, setHealthCertificate] = useState("");
   const [activities, setActivities] = useState<IActivity[]>([]);
 
-  const { addUser, updateUser } = userSlice.actions;
+  const { updateUser } = userSlice.actions;
   const dispatch = useDispatch();
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  const handleCpfChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCpf(event.target.value);
+  };
+
+  const handleRgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRg(event.target.value);
+  };
+
+  const handleDateOfBirthChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDateOfBirth(event.target.value);
+  };
+
+  const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGender(Number(event.target.value));
+  };
+
+  const handleStatusChange = (checked: boolean) => {
+    setStatus(checked);
+  };
+
+  const handleRoleChange = (value: string) => {
+    setRole(value);
+  };
+
+  const handleUsesEPIChange = (checked: boolean) => {
+    setUsesEPI(checked);
+  };
+
+  const handleHealthCertificateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setHealthCertificate(event.target.value);
+  };
+
+  const handleActivitiesChange = (value: IActivity[]) => {
+    setActivities(value);
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const newUser = {
-      name: name,
-      cpf: cpf,
-      rg: rg,
-      dateOfBirth: dateOfBirth,
+    const updatedData: IReduxUser = {
+      _id,
+      name,
+      cpf,
+      rg,
+      dateOfBirth,
       gender: gender === 1 ? "Feminino" : "Masculino",
-      status: status === false ? "Inativo" : "Ativo",
-      role: role,
-      usesEPI: usesEPI,
-      healthCertificate: healthCertificate,
-      activities: activities,
+      status: status ? "Ativo" : "Inativo",
+      role,
+      usesEPI,
+      healthCertificate,
+      activities,
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/users", newUser);
+      const response = await axios.put(
+        `http://localhost:5000/users/user-update/${_id}`,
+        updatedData
+      );
       console.log(response.data);
-      toast.success("Usuario cadastrado com sucesso!", {
+      toast.success("Usuario atualizado com sucesso!", {
         onClose: () => window.location.reload(),
       });
-      dispatch(addUser(newUser));
+      dispatch(updateUser(updatedData));
     } catch (error) {
       console.error(error);
-      toast.error("Erro ao cadastrar usuário");
+      toast.error("Erro ao atualizar usuário");
     }
   };
 
-  const handleBackClick = () => {};
-
   const [value, setValue] = useState(1);
 
-  const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
-  };
+  // const onChange = (e: RadioChangeEvent) => {
+  //   console.log("radio checked", e.target.value);
+  //   setValue(e.target.value);
+  // };
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
@@ -173,7 +219,8 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
             <Switch
               checkedChildren="Ativo"
               unCheckedChildren="Inativo"
-              onChange={(value) => setStatus(value)}
+              checked={status}
+              onChange={handleStatusChange}
             />
           </div>
         </div>
@@ -188,7 +235,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
               <Input
                 placeholder="Nome"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
               />
             </div>
             <div className="user-name-form-container">
@@ -198,7 +245,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
               <Input
                 placeholder="000.000.000-00"
                 value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
+                onChange={handleCpfChange}
               />
             </div>
             <div className="user-name-form-container">
@@ -208,7 +255,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
               <Input
                 placeholder="0.000.000"
                 value={rg}
-                onChange={(e) => setRg(e.target.value)}
+                onChange={handleRgChange}
               />
             </div>
           </div>
@@ -218,7 +265,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
             </div>
             <div className="user-input-form">
               <Radio.Group
-                onChange={(e) => setGender(e.target.value)}
+                // onChange={handleGenderChange}
                 value={gender}
               >
                 <Radio value={1}>Feminino</Radio>
@@ -232,7 +279,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
               <Input
                 placeholder="00/00/0000"
                 value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
+                onChange={handleDateOfBirthChange}
               />
             </div>
             <div className="user-name-form-container">
@@ -243,7 +290,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                 defaultValue="Escolha um cargo"
                 style={{ width: "100%" }}
                 value={role}
-                onChange={(value) => setRole(value)}
+                onChange={handleRoleChange}
                 options={[
                   { value: "Cargo 1", label: "Cargo 1" },
                   { value: "Cargo 2", label: "Cargo 2" },
@@ -271,10 +318,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
               <div className="user-question-checkbox">
                 <Checkbox
                   checked={usesEPI}
-                  onChange={(e) => {
-                    setUsesEPI(e.target.checked);
-                    onCheckedboxChange(e);
-                  }}
+                  // onChange={handleUsesEPIChange}
                 >
                   O trabalhador não usa EPI.
                 </Checkbox>
@@ -403,12 +447,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                 className="input-file"
                 accept=".png, .jpeg, .jpg, .pdf"
                 style={{ display: "none" }}
-                onChange={(e) => {
-                  if (e.target.files) {
-                    setFileName(e.target.files[0].name);
-                    setHealthCertificate(e.target.files[0].name);
-                  }
-                }}
+                onChange={handleHealthCertificateChange}
               />
             </div>
           </div>

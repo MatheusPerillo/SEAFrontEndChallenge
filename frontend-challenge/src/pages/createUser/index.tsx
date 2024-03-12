@@ -16,6 +16,7 @@ export default function CreateUser() {
   const [viewState, setViewState] = useState<
     "AddViewUser" | "AddForm" | "EditForm"
   >("AddViewUser");
+  const [editingUserId, setEditingUserId] = useState<string>("");
   const [completedItems, setCompletedItems] = useState([
     false,
     false,
@@ -91,7 +92,7 @@ export default function CreateUser() {
               <div className="global-form-container">
                 <div className="form-container">
                   {viewState === "EditForm" && (
-                    <EditForm setViewState={setViewState} />
+                    <EditForm _id={editingUserId} setViewState={setViewState} />
                   )}
                   {viewState === "AddForm" && (
                     <AddForm setViewState={setViewState} />
@@ -100,6 +101,7 @@ export default function CreateUser() {
                     <AddViewUser
                       setViewState={setViewState}
                       setSwitchState={handleSwitchChange}
+                      setEditingUserId={setEditingUserId}
                     />
                   )}
                 </div>

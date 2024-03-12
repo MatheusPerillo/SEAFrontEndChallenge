@@ -14,11 +14,13 @@ interface AddViewUserProps {
   setViewState: React.Dispatch<
     React.SetStateAction<"AddViewUser" | "AddForm" | "EditForm">
   >;
+  setEditingUserId: (id: string) => void;
 }
 
 const AddViewUser: React.FC<AddViewUserProps> = ({
   setSwitchState,
   setViewState,
+  setEditingUserId,
 }) => {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [activeButton, setActiveButton] = useState();
@@ -141,6 +143,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
               role={user.role}
               _id={user._id || ""}
               setViewState={setViewState}
+              setEditingUserId={setEditingUserId}
             />
           ))}
       </div>

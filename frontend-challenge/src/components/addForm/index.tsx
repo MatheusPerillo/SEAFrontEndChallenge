@@ -151,8 +151,6 @@ const AddForm = ({ setViewState }: IAddForm) => {
   //     console.error("Error:", error);
   //   });
 
-  const handleBackClick = () => {};
-
   const [value, setValue] = useState(1);
 
   const onChange = (e: RadioChangeEvent) => {
