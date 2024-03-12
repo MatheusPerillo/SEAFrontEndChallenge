@@ -149,13 +149,6 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
     }
   };
 
-  const [value, setValue] = useState(1);
-
-  // const onChange = (e: RadioChangeEvent) => {
-  //   console.log("radio checked", e.target.value);
-  //   setValue(e.target.value);
-  // };
-
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };

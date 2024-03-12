@@ -76,7 +76,6 @@ const AddForm = ({ setViewState }: IAddForm) => {
       role: role,
       usesEPI: usesEPI,
       healthCertificate: healthCertificate,
-      activities: activities,
     };
 
     try {
@@ -91,65 +90,6 @@ const AddForm = ({ setViewState }: IAddForm) => {
       toast.error("Erro ao cadastrar usuário");
     }
   };
-
-  // const handleUpdate = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-
-  //   const updatedUser = {
-  //     name: name,
-  //     cpf: cpf,
-  //     rg: rg,
-  //     dateOfBirth: dateOfBirth,
-  //     gender: gender === 1 ? "Feminino" : "Masculino",
-  //     status: status === false ? "Inativo" : "Ativo",
-  //     role: role,
-  //     usesEPI: usesEPI,
-  //     healthCertificate: healthCertificate,
-  //   };
-
-  //   axios
-  //     .put(`/user-update/${_id}`, updatedUser)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setIsEditing(false);
-  //       setIsAdding(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-
-  //   try {
-  //     const response = await axios.put(
-  //       `http://localhost:5000/user-update/${_id}`,
-  //       updatedUser
-  //     );
-  //     console.log(response.data);
-  //     setIsEditing(false);
-  //     setIsAdding(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // axios
-  //   .get(`/user-update/${_id}`)
-  //   .then((response) => {
-  //     const user = response.data;
-
-  //     setName(user.name);
-  //     setCpf(user.cpf);
-  //     setRg(user.rg);
-  //     setDateOfBirth(user.dateOfBirth);
-  //     setGender(user.gender === "Feminino" ? 1 : 2);
-  //     setStatus(user.status === "Ativo");
-  //     setRole(user.role);
-  //     setUsesEPI(user.usesEPI);
-  //     setHealthCertificate(user.healthCertificate);
-  //     setAtividades(user.activities);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error:", error);
-  //   });
 
   const [value, setValue] = useState(1);
 
