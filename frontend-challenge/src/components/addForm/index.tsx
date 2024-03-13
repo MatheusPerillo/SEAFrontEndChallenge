@@ -1,35 +1,39 @@
-import { Checkbox, Input, Radio, Select, Switch } from "antd";
-import "./styles.css";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import React, { useState } from "react";
-import type { RadioChangeEvent } from "antd";
-import { PaperClipOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
-import type { CheckboxProps } from "antd";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { Checkbox, Input, Radio, Select, Switch } from "antd";
+import { IoIosArrowRoundBack } from "react-icons/io";
+import { PaperClipOutlined } from "@ant-design/icons";
+import type { CheckboxProps } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { userSlice } from "../../reducers/index";
 
-interface IForm {
-  setIsEditing: (value: boolean) => void;
-  setIsAdding: (value: boolean) => void;
-  isAdding: boolean;
-  _id?: string;
+import "./styles.css";
+
+interface IAddForm {
+  setViewState: React.Dispatch<
+    React.SetStateAction<"AddViewUser" | "AddForm" | "EditForm">
+  >;
 }
 
 interface Epi {
   id: string;
-  value?: string;
+  name: string;
+  ca: string;
 }
 
 interface Atividade {
   id: string;
+  name: string;
   epis: Epi[];
 }
 
-const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
-  const [atividades, setAtividades] = useState<Atividade[]>([
-    { id: uuidv4(), epis: [{ id: uuidv4() }] },
+const AddForm = ({ setViewState }: IAddForm) => {
+  const [activities, setActivities] = useState<Atividade[]>([
+    { id: uuidv4(), name: "", epis: [{ id: uuidv4(), name: "", ca: "" }] },
   ]);
   const [isEpiAdded, setIsEpiAdded] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
@@ -46,6 +50,9 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
   const [usesEPI, setUsesEPI] = useState(false);
   const [healthCertificate, setHealthCertificate] = useState("");
 
+  const { addUser } = userSlice.actions;
+  const dispatch = useDispatch();
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -59,102 +66,58 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
       role: role,
       usesEPI: usesEPI,
       healthCertificate: healthCertificate,
+      activities: activities,
     };
 
     try {
       const response = await axios.post("http://localhost:5000/users", newUser);
-      console.log(response.data);
+      console.log("Response data:", response.data);
       toast.success("Usuario cadastrado com sucesso!", {
         onClose: () => window.location.reload(),
       });
+      dispatch(addUser(newUser));
     } catch (error) {
       console.error(error);
       toast.error("Erro ao cadastrar usuário");
     }
   };
 
-  // const handleUpdate = async (event: React.FormEvent) => {
-  //   event.preventDefault();
+  const [, setValue] = useState(1);
 
-  //   const updatedUser = {
-  //     name: name,
-  //     cpf: cpf,
-  //     rg: rg,
-  //     dateOfBirth: dateOfBirth,
-  //     gender: gender === 1 ? "Feminino" : "Masculino",
-  //     status: status === false ? "Inativo" : "Ativo",
-  //     role: role,
-  //     usesEPI: usesEPI,
-  //     healthCertificate: healthCertificate,
-  //   };
-
-  //   axios
-  //     .put(`/user-update/${_id}`, updatedUser)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setIsEditing(false);
-  //       setIsAdding(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
-
-  //   try {
-  //     const response = await axios.put(
-  //       `http://localhost:5000/user-update/${_id}`,
-  //       updatedUser
-  //     );
-  //     console.log(response.data);
-  //     setIsEditing(false);
-  //     setIsAdding(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  axios
-    .get(`/user-update/${_id}`)
-    .then((response) => {
-      const user = response.data;
-
-      setName(user.name);
-      setCpf(user.cpf);
-      setRg(user.rg);
-      setDateOfBirth(user.dateOfBirth);
-      setGender(user.gender === "Feminino" ? 1 : 2);
-      setStatus(user.status === "Ativo");
-      setRole(user.role);
-      setUsesEPI(user.usesEPI);
-      setHealthCertificate(user.healthCertificate);
-      setAtividades(user.activities);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-
-  const handleBackClick = () => {
-    setIsEditing(false);
-    setIsAdding(false);
+  const handleChangeActivities = (atividadeId: string, value: string) => {
+    setActivities(
+      activities.map((atividade) =>
+        atividade.id === atividadeId ? { ...atividade, name: value } : atividade
+      )
+    );
   };
 
-  const [value, setValue] = useState(1);
-
-  const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
-  };
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const handleAddEpi = (atividadeId: string) => {
-    setAtividades(
-      atividades.map((atividade) =>
+  const handleChangeEPI = (
+    atividadeId: string,
+    epiId: string,
+    value: string
+  ) => {
+    setActivities(
+      activities.map((atividade) =>
         atividade.id === atividadeId
           ? {
               ...atividade,
-              epis: [...atividade.epis, { id: uuidv4() }],
+              epis: atividade.epis.map((epi) =>
+                epi.id === epiId ? { ...epi, name: value } : epi
+              ),
+            }
+          : atividade
+      )
+    );
+  };
+
+  const handleAddEpi = (atividadeId: string) => {
+    setActivities(
+      activities.map((atividade) =>
+        atividade.id === atividadeId
+          ? {
+              ...atividade,
+              epis: [...atividade.epis, { id: uuidv4(), name: "", ca: "" }],
             }
           : atividade
       )
@@ -162,9 +125,24 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
     setIsEpiAdded(true);
   };
 
+  const handleUpdateCa = (atividadeId: string, epiId: string, ca: string) => {
+    setActivities(
+      activities.map((atividade) =>
+        atividade.id === atividadeId
+          ? {
+              ...atividade,
+              epis: atividade.epis.map((epi) =>
+                epi.id === epiId ? { ...epi, ca: ca } : epi
+              ),
+            }
+          : atividade
+      )
+    );
+  };
+
   const handleDeleteEpi = (atividadeId: string, epiId: string) => {
-    setAtividades(
-      atividades.map((atividade) =>
+    setActivities(
+      activities.map((atividade) =>
         atividade.id === atividadeId
           ? {
               ...atividade,
@@ -175,7 +153,7 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
     );
 
     if (
-      atividades.find((atividade) => atividade.id === atividadeId)?.epis
+      activities.find((atividade) => atividade.id === atividadeId)?.epis
         .length === 2
     ) {
       setIsEpiAdded(false);
@@ -183,12 +161,15 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
   };
 
   const handleAddAtividade = () => {
-    setAtividades([...atividades, { id: uuidv4(), epis: [{ id: uuidv4() }] }]);
+    setActivities([
+      ...activities,
+      { id: uuidv4(), name: "", epis: [{ id: uuidv4(), name: "", ca: "" }] },
+    ]);
   };
 
   const handleDeleteAtividade = (atividadeId: string) => {
-    setAtividades(
-      atividades.filter((atividade) => atividade.id !== atividadeId)
+    setActivities(
+      activities.filter((atividade) => atividade.id !== atividadeId)
     );
   };
 
@@ -198,7 +179,10 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
 
   return (
     <form className="form-global-container" onSubmit={handleSubmit}>
-      <div className="form-header-container" onClick={handleBackClick}>
+      <div
+        className="form-header-container"
+        onClick={() => setViewState("AddViewUser")}
+      >
         <p className="form-header-text">
           <IoIosArrowRoundBack size="1.3em" color="white" /> Adicionar
           Funcionário
@@ -293,7 +277,7 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
             </div>
           </div>
         </div>
-        {atividades.map((atividade) => (
+        {activities.map((atividade) => (
           <div
             key={atividade.id}
             className={`user-security-equipment-container ${
@@ -329,11 +313,14 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
                       <Select
                         defaultValue="Escolha uma atividade"
                         style={{ width: "100%" }}
-                        onChange={handleChange}
+                        value={atividade.name}
+                        onChange={(value) =>
+                          handleChangeActivities(atividade.id, value)
+                        }
                         options={[
-                          { value: "Atividade1", label: "Atividade 1" },
-                          { value: "Atividade2", label: "Atividade 2" },
-                          { value: "Atividade3", label: "Atividade 3" },
+                          { value: "Atividade 1", label: "Atividade 1" },
+                          { value: "Atividade 2", label: "Atividade 2" },
+                          { value: "Atividade 3", label: "Atividade 3" },
                         ]}
                       />
                     </div>
@@ -350,7 +337,10 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
                             <Select
                               defaultValue="Escolha um EPI"
                               style={{ width: "100%" }}
-                              onChange={handleChange}
+                              value={epi.name}
+                              onChange={(value) =>
+                                handleChangeEPI(atividade.id, epi.id, value)
+                              }
                               options={[
                                 {
                                   value: "Calçado de segurança",
@@ -367,7 +357,17 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
                             <p>Informe o numero do CA:</p>
                           </div>
                           <div className="user-security-equipment-select-epi-container">
-                            <Input placeholder="0000" />
+                            <Input
+                              placeholder="0000"
+                              value={epi.ca}
+                              onChange={(event) =>
+                                handleUpdateCa(
+                                  atividade.id,
+                                  epi.id,
+                                  event.target.value
+                                )
+                              }
+                            />
                           </div>
                         </div>
                         <div className="user-security-equipment-epi-container">
@@ -376,6 +376,7 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
                             {epi.id ===
                             atividade.epis[atividade.epis.length - 1].id ? (
                               <button
+                                type="button"
                                 className={`button-add-epi ${
                                   isEpiAdded ? "button-add-epi-expanded" : ""
                                 }`}
@@ -385,6 +386,7 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
                               </button>
                             ) : (
                               <button
+                                type="button"
                                 className={`button-add-epi ${
                                   isEpiAdded ? "button-add-epi-expanded" : ""
                                 }`}
@@ -401,7 +403,7 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
                     ))}
                   </div>
                   <>
-                    {atividade.id === atividades[atividades.length - 1].id ? (
+                    {atividade.id === activities[activities.length - 1].id ? (
                       <div
                         className="button-add-user-activity-container"
                         onClick={handleAddAtividade}
@@ -462,4 +464,4 @@ const Form = ({ setIsEditing, isAdding, setIsAdding, _id }: IForm) => {
   );
 };
 
-export default Form;
+export default AddForm;

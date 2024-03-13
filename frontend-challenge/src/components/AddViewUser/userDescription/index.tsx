@@ -9,7 +9,10 @@ export interface IUserDescription {
   status: string;
   role: string;
   _id: string;
-  onEditClick: () => void;
+  setViewState: React.Dispatch<
+    React.SetStateAction<"AddViewUser" | "AddForm" | "EditForm">
+  >;
+  setEditingUserId: (id: string) => void;
 }
 
 const UserDescription = ({
@@ -18,7 +21,8 @@ const UserDescription = ({
   status,
   role,
   _id,
-  onEditClick,
+  setViewState,
+  setEditingUserId,
 }: IUserDescription) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,6 +32,11 @@ const UserDescription = ({
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+  const handleEditClick = () => {
+    setViewState("EditForm");
+    setEditingUserId(_id);
+    handleCloseModal();
   };
 
   return (
@@ -54,7 +63,7 @@ const UserDescription = ({
       {isModalOpen && (
         <EditModal
           onClose={handleCloseModal}
-          onEditClick={onEditClick}
+          onEditClick={handleEditClick}
           _id={_id}
         />
       )}

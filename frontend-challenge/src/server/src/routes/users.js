@@ -41,49 +41,35 @@ router.get("/:id", getUser, (req, res) => {
     res.json(res.locals.user);
 });
 // Atualizar um usuário específico por ID
-router.patch("/:id", getUser, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (req.body.name != null) {
-        res.locals.user.name = req.body.name;
-    }
-    if (req.body.cpf != null) {
-        res.locals.user.cpf = req.body.cpf;
-    }
-    if (req.body.rg != null) {
-        res.locals.user.rg = req.body.rg;
-    }
-    if (req.body.dateOfBirth != null) {
-        res.locals.user.dateOfBirth = req.body.dateOfBirth;
-    }
-    if (req.body.gender != null) {
-        res.locals.user.gender = req.body.gender;
-    }
-    if (req.body.status != null) {
-        res.locals.user.status = req.body.status;
-    }
-    if (req.body.role != null) {
-        res.locals.user.role = req.body.role;
-    }
-    if (req.body.usesEPI != null) {
-        res.locals.user.usesEPI = req.body.usesEPI;
-    }
-    if (req.body.healthCertificate != null) {
-        res.locals.user.healthCertificate = req.body.healthCertificate;
-    }
-    if (req.body.activities != null) {
-        res.locals.user.activities = req.body.activities.map((activity) => ({
-            name: activity.name,
-            EPIs: activity.EPIs.map((epi) => ({
-                name: epi.name,
-                CA: epi.CA,
-            })),
-        }));
-    }
+router.put("/user-update/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { name, cpf, rg, dateOfBirth, gender, status, role, usesEPI, healthCertificate, activities, } = req.body;
     try {
-        const updatedUser = yield res.locals.user.save();
-        res.json(updatedUser);
+        const updateFields = {
+            name,
+            cpf,
+            rg,
+            dateOfBirth,
+            gender,
+            status,
+            role,
+            usesEPI,
+            healthCertificate,
+            activities,
+        };
+        const updatedUser = yield user_1.default.findByIdAndUpdate(id, updateFields, {
+            new: true,
+        });
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        return res
+            .status(200)
+            .json({ message: "Usuário atualizado com sucesso", user: updatedUser });
     }
-    catch (err) {
-        res.status(500).json({ message: err.message });
+    catch (error) {
+        console.error("Erro ao atualizar usuário:", error);
+        return res.status(500).json({ error: "Internal Server Error" });
     }
 }));
 // Excluir um usuário específico por ID

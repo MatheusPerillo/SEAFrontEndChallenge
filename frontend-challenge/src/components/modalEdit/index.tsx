@@ -2,16 +2,18 @@ import React, { useRef, MouseEvent } from "react";
 import "./styles.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { userSlice } from "../../reducers/index";
 
 interface EditModalProps {
   onClose: () => void;
   onEditClick: () => void;
-
   _id: string;
 }
 
 const EditModal: React.FC<EditModalProps> = ({ onClose, onEditClick, _id }) => {
   const modalContentRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useDispatch();
 
   const handleClickOutside = (event: MouseEvent<HTMLDivElement>) => {
     if (
@@ -22,6 +24,8 @@ const EditModal: React.FC<EditModalProps> = ({ onClose, onEditClick, _id }) => {
     }
   };
 
+  const { deleteUser } = userSlice.actions;
+
   const handleDeleteUser = async () => {
     try {
       const response = await axios.delete(`http://localhost:5000/users/${_id}`);
@@ -29,6 +33,7 @@ const EditModal: React.FC<EditModalProps> = ({ onClose, onEditClick, _id }) => {
       toast.error("Usuario excluído com sucesso!", {
         onClose: () => window.location.reload(),
       });
+      dispatch(deleteUser(_id));
     } catch (error) {
       console.error("message", error);
       toast.error("Erro ao excluir usuário");
