@@ -62,10 +62,6 @@ export default function CreateUser() {
     }
   };
 
-  // useEffect(() => {
-  //   setIsFormVisible(isEditing);
-  // }, [isEditing]);
-
   return (
     <div className="global-container">
       <div className="lateral-container">
