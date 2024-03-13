@@ -5,21 +5,29 @@
 Projeto para visualizaçao, cadastro, ediçao e deleção de funcionários com sua(s) respectiva(s) atividade(s) e EPI(s).
 
 ## Stacks para desenvolvimento
-- Frontend: React com Typescript
+- Frontend: React com Typescript e Redux
 - Backend: Node com Typescript + Express
 - Banco de dados: MongoDB e Mongoose como ODM (Object Document Mapper)
 
-## Facilidades
+## Facilidades (v. 1.0)
 
 - Ponto 1: Familiaridades com as stacks em projetos pessoais, acadêmicos e profissionais.
 - Ponto 2: Usei bibliotecas de design que facilitaram e otimizaram meu desenvolvimento.
 
-## Pontos de Melhoria
+## Facilidades (v. 2.0)
+
+- Ponto 1: Usar o Redux facilitou e muito as funcionalidades do projeto.
+
+## Pontos de Melhoria (v. 1.0)
 
 - Poderia ter dado um pouco mais de atenção para a responsividade, principalmente na sidebar e nas etapas.
 - Implementar corretamente o cadastro de atividade e seu EPI.
   - A implementação dessa funcionalidade estava salvando no banco sempre o último criado, ou seja, está sobrevendo.
 - Implementar corretamente a edição de funcionário.
+
+## Pontos de Melhoria (v. 2.0)
+
+- Poderia ter dado um pouco mais de atenção para a responsividade, principalmente na sidebar e nas etapas.
 
 ## Instalação
 
