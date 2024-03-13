@@ -4,18 +4,23 @@ import "./styles.css";
 import { Switch } from "antd";
 import UserDescription from "./userDescription";
 import axios from "axios";
-import { IUser } from "../../../server/src/models/user";
+import { IUser } from "../../server/src/models/user";
+
+import { useDispatch } from "react-redux";
+import { userSlice } from "../../reducers/index";
 
 interface AddViewUserProps {
   setSwitchState: (value: boolean) => void;
-  onEditClick: () => void;
-  onAddClick: () => void;
+  setViewState: React.Dispatch<
+    React.SetStateAction<"AddViewUser" | "AddForm" | "EditForm">
+  >;
+  setEditingUserId: (id: string) => void;
 }
 
 const AddViewUser: React.FC<AddViewUserProps> = ({
   setSwitchState,
-  onEditClick,
-  onAddClick,
+  setViewState,
+  setEditingUserId,
 }) => {
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [activeButton, setActiveButton] = useState();
@@ -26,6 +31,9 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
     active: "#649FBF",
     clean: "#959595",
   });
+
+  const { setsUsers } = userSlice.actions;
+  const dispatch = useDispatch();
 
   const handleSwitchChange = (checked: boolean) => {
     setIsSwitchChecked(checked);
@@ -55,7 +63,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
     );
     setIsSwitchChecked(savedSwitchState);
     setSwitchState(savedSwitchState);
-  }, [setSwitchState]);
+  }, []);
 
   useEffect(() => {
     fetchUsers().then(setUsers);
@@ -65,6 +73,7 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
     fetchUsers().then((users) => {
       setUsers(users);
       setUsersActives(users);
+      dispatch(setsUsers(users));
     });
   }, []);
 
@@ -73,7 +82,10 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
       <div className="header-container">
         <p className="header-text">Funcionário(s)</p>
       </div>
-      <button className="add-button-global-container" onClick={onAddClick}>
+      <button
+        className="add-button-global-container"
+        onClick={() => setViewState("AddForm")}
+      >
         <p className="add-button-text">+ Adicionar Funcionário</p>
       </button>
       <div className="filter-container">
@@ -129,8 +141,9 @@ const AddViewUser: React.FC<AddViewUserProps> = ({
               cpf={user.cpf}
               status={user.status}
               role={user.role}
-              _id={user._id}
-              onEditClick={onEditClick}
+              _id={user._id || ""}
+              setViewState={setViewState}
+              setEditingUserId={setEditingUserId}
             />
           ))}
       </div>

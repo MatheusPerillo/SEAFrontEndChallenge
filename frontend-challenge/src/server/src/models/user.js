@@ -26,11 +26,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const EPISchema = new mongoose_1.Schema({
     name: { type: String },
-    CA: { type: String },
+    ca: { type: String },
 });
 const ActivitySchema = new mongoose_1.Schema({
     name: { type: String },
-    EPIs: [EPISchema],
+    epis: [EPISchema],
 });
 const UserSchema = new mongoose_1.Schema({
     name: { type: String, required: true },

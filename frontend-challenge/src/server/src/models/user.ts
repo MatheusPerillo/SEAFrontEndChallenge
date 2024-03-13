@@ -1,5 +1,11 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+interface IUserEPI extends Document {
+  id?: string;
+  name?: string;
+  ca?: string;
+}
+
 export interface IUser extends Document {
   _id?: string;
   name: string;
@@ -13,22 +19,19 @@ export interface IUser extends Document {
   healthCertificate?: string;
   activities?: Array<{
     name?: string;
-    EPIs?: Array<{
-      name?: string;
-      CA?: string;
-    }>;
+    epis?: Array<IUserEPI>;
   }>;
 }
 export type UserDocument = IUser & Document;
 
 const EPISchema: Schema = new Schema({
   name: { type: String },
-  CA: { type: String },
+  ca: { type: String },
 });
 
 const ActivitySchema: Schema = new Schema({
   name: { type: String },
-  EPIs: [EPISchema],
+  epis: [EPISchema],
 });
 
 const UserSchema: Schema = new Schema({
