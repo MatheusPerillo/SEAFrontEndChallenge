@@ -357,9 +357,9 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                           handleChangeActivities(atividade.id, value)
                         }
                         options={[
-                          { value: "Atividade1", label: "Atividade 1" },
-                          { value: "Atividade2", label: "Atividade 2" },
-                          { value: "Atividade3", label: "Atividade 3" },
+                          { value: "Atividade 1", label: "Atividade 1" },
+                          { value: "Atividade 2", label: "Atividade 2" },
+                          { value: "Atividade 3", label: "Atividade 3" },
                         ]}
                       />
                     </div>
@@ -415,6 +415,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                             {epi.id ===
                             atividade.epis[atividade.epis.length - 1].id ? (
                               <button
+                                type="button"
                                 className={`button-add-epi ${
                                   isEpiAdded ? "button-add-epi-expanded" : ""
                                 }`}
@@ -424,6 +425,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                               </button>
                             ) : (
                               <button
+                                type="button"
                                 className={`button-add-epi ${
                                   isEpiAdded ? "button-add-epi-expanded" : ""
                                 }`}

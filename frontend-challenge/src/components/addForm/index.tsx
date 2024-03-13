@@ -71,7 +71,6 @@ const AddForm = ({ setViewState }: IAddForm) => {
 
     try {
       const response = await axios.post("http://localhost:5000/users", newUser);
-      console.log(response.data);
       toast.success("Usuario cadastrado com sucesso!", {
         onClose: () => window.location.reload(),
       });
