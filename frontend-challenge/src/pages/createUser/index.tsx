@@ -124,7 +124,11 @@ export default function CreateUser() {
             <button
               className={`button-next-step ${
                 isSwitchChecked ? "enabled" : ""
-              } ${isFormVisible ? "form-visible" : ""}`}
+              } ${
+                viewState === "AddForm" || viewState === "EditForm"
+                  ? "form-visible"
+                  : ""
+              }`}
               disabled={!isSwitchChecked}
               onClick={handleNextStepClick}
             >
