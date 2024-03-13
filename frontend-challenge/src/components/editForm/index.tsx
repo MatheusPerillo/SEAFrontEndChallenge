@@ -22,29 +22,21 @@ interface IEditForm {
   >;
 }
 
-interface IEPI {
-  name?: string;
-  CA?: string;
-}
-
-interface IActivity {
-  name?: string;
-  EPIs?: IEPI[];
-}
-
 interface Epi {
   id: string;
-  value?: string;
+  name: string;
+  ca: string;
 }
 
 interface Atividade {
   id: string;
+  name: string;
   epis: Epi[];
 }
 
 const EditForm = ({ _id, setViewState }: IEditForm) => {
-  const [atividades, setAtividades] = useState<Atividade[]>([
-    { id: uuidv4(), epis: [{ id: uuidv4() }] },
+  const [activities, setActivities] = useState<Atividade[]>([
+    { id: uuidv4(), name: "", epis: [{ id: uuidv4(), name: "", ca: "" }] },
   ]);
   const [isEpiAdded, setIsEpiAdded] = useState(false);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
@@ -60,10 +52,42 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
   const [role, setRole] = useState("");
   const [usesEPI, setUsesEPI] = useState(false);
   const [healthCertificate, setHealthCertificate] = useState("");
-  const [activities, setActivities] = useState<IActivity[]>([]);
 
   const { updateUser } = userSlice.actions;
   const dispatch = useDispatch();
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const updatedData: IReduxUser = {
+      _id,
+      name,
+      cpf,
+      rg,
+      dateOfBirth,
+      gender: gender === 1 ? "Feminino" : "Masculino",
+      status: status ? "Ativo" : "Inativo",
+      role,
+      usesEPI,
+      healthCertificate,
+      activities,
+    };
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/users/user-update/${_id}`,
+        updatedData
+      );
+      console.log(response.data);
+      toast.success("Usuario atualizado com sucesso!", {
+        onClose: () => window.location.reload(),
+      });
+      dispatch(updateUser(updatedData));
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao atualizar usuário");
+    }
+  };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -112,54 +136,40 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
     }
   };
 
-  const handleActivitiesChange = (value: IActivity[]) => {
-    setActivities(value);
+  const handleChangeActivities = (atividadeId: string, value: string) => {
+    setActivities(
+      activities.map((atividade) =>
+        atividade.id === atividadeId ? { ...atividade, name: value } : atividade
+      )
+    );
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const updatedData: IReduxUser = {
-      _id,
-      name,
-      cpf,
-      rg,
-      dateOfBirth,
-      gender: gender === 1 ? "Feminino" : "Masculino",
-      status: status ? "Ativo" : "Inativo",
-      role,
-      usesEPI,
-      healthCertificate,
-      activities,
-    };
-
-    try {
-      const response = await axios.put(
-        `http://localhost:5000/users/user-update/${_id}`,
-        updatedData
-      );
-      console.log(response.data);
-      toast.success("Usuario atualizado com sucesso!", {
-        onClose: () => window.location.reload(),
-      });
-      dispatch(updateUser(updatedData));
-    } catch (error) {
-      console.error(error);
-      toast.error("Erro ao atualizar usuário");
-    }
-  };
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const handleAddEpi = (atividadeId: string) => {
-    setAtividades(
-      atividades.map((atividade) =>
+  const handleChangeEPI = (
+    atividadeId: string,
+    epiId: string,
+    value: string
+  ) => {
+    setActivities(
+      activities.map((atividade) =>
         atividade.id === atividadeId
           ? {
               ...atividade,
-              epis: [...atividade.epis, { id: uuidv4() }],
+              epis: atividade.epis.map((epi) =>
+                epi.id === epiId ? { ...epi, name: value } : epi
+              ),
+            }
+          : atividade
+      )
+    );
+  };
+
+  const handleAddEpi = (atividadeId: string) => {
+    setActivities(
+      activities.map((atividade) =>
+        atividade.id === atividadeId
+          ? {
+              ...atividade,
+              epis: [...atividade.epis, { id: uuidv4(), name: "", ca: "" }],
             }
           : atividade
       )
@@ -167,9 +177,24 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
     setIsEpiAdded(true);
   };
 
+  const handleUpdateCa = (atividadeId: string, epiId: string, ca: string) => {
+    setActivities(
+      activities.map((atividade) =>
+        atividade.id === atividadeId
+          ? {
+              ...atividade,
+              epis: atividade.epis.map((epi) =>
+                epi.id === epiId ? { ...epi, ca: ca } : epi
+              ),
+            }
+          : atividade
+      )
+    );
+  };
+
   const handleDeleteEpi = (atividadeId: string, epiId: string) => {
-    setAtividades(
-      atividades.map((atividade) =>
+    setActivities(
+      activities.map((atividade) =>
         atividade.id === atividadeId
           ? {
               ...atividade,
@@ -180,7 +205,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
     );
 
     if (
-      atividades.find((atividade) => atividade.id === atividadeId)?.epis
+      activities.find((atividade) => atividade.id === atividadeId)?.epis
         .length === 2
     ) {
       setIsEpiAdded(false);
@@ -188,12 +213,15 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
   };
 
   const handleAddAtividade = () => {
-    setAtividades([...atividades, { id: uuidv4(), epis: [{ id: uuidv4() }] }]);
+    setActivities([
+      ...activities,
+      { id: uuidv4(), name: "", epis: [{ id: uuidv4(), name: "", ca: "" }] },
+    ]);
   };
 
   const handleDeleteAtividade = (atividadeId: string) => {
-    setAtividades(
-      atividades.filter((atividade) => atividade.id !== atividadeId)
+    setActivities(
+      activities.filter((atividade) => atividade.id !== atividadeId)
     );
   };
 
@@ -294,7 +322,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
             </div>
           </div>
         </div>
-        {atividades.map((atividade) => (
+        {activities.map((atividade) => (
           <div
             key={atividade.id}
             className={`user-security-equipment-container ${
@@ -324,7 +352,10 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                       <Select
                         defaultValue="Escolha uma atividade"
                         style={{ width: "100%" }}
-                        onChange={handleChange}
+                        value={atividade.name}
+                        onChange={(value) =>
+                          handleChangeActivities(atividade.id, value)
+                        }
                         options={[
                           { value: "Atividade1", label: "Atividade 1" },
                           { value: "Atividade2", label: "Atividade 2" },
@@ -345,7 +376,10 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                             <Select
                               defaultValue="Escolha um EPI"
                               style={{ width: "100%" }}
-                              onChange={handleChange}
+                              value={epi.name}
+                              onChange={(value) =>
+                                handleChangeEPI(atividade.id, epi.id, value)
+                              }
                               options={[
                                 {
                                   value: "Calçado de segurança",
@@ -362,7 +396,17 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                             <p>Informe o numero do CA:</p>
                           </div>
                           <div className="user-security-equipment-select-epi-container">
-                            <Input placeholder="0000" />
+                            <Input
+                              placeholder="0000"
+                              value={epi.ca}
+                              onChange={(event) =>
+                                handleUpdateCa(
+                                  atividade.id,
+                                  epi.id,
+                                  event.target.value
+                                )
+                              }
+                            />
                           </div>
                         </div>
                         <div className="user-security-equipment-epi-container">
@@ -396,7 +440,7 @@ const EditForm = ({ _id, setViewState }: IEditForm) => {
                     ))}
                   </div>
                   <>
-                    {atividade.id === atividades[atividades.length - 1].id ? (
+                    {atividade.id === activities[activities.length - 1].id ? (
                       <div
                         className="button-add-user-activity-container"
                         onClick={handleAddAtividade}

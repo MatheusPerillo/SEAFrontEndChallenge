@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 
 import { Checkbox, Input, Radio, Select, Switch } from "antd";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import type { RadioChangeEvent } from "antd";
 import { PaperClipOutlined } from "@ant-design/icons";
 import type { CheckboxProps } from "antd";
 import { toast } from "react-toastify";
@@ -83,12 +82,7 @@ const AddForm = ({ setViewState }: IAddForm) => {
     }
   };
 
-  const [value, setValue] = useState(1);
-
-  const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
-  };
+  const [, setValue] = useState(1);
 
   const handleChangeActivities = (atividadeId: string, value: string) => {
     setActivities(
@@ -131,25 +125,6 @@ const AddForm = ({ setViewState }: IAddForm) => {
     setIsEpiAdded(true);
   };
 
-  const handleUpdateEpiName = (
-    atividadeId: string,
-    epiId: string,
-    name: string
-  ) => {
-    setActivities(
-      activities.map((atividade) =>
-        atividade.id === atividadeId
-          ? {
-              ...atividade,
-              epis: atividade.epis.map((epi) =>
-                epi.id === epiId ? { ...epi, name: name } : epi
-              ),
-            }
-          : atividade
-      )
-    );
-  };
-
   const handleUpdateCa = (atividadeId: string, epiId: string, ca: string) => {
     setActivities(
       activities.map((atividade) =>
@@ -190,14 +165,6 @@ const AddForm = ({ setViewState }: IAddForm) => {
       ...activities,
       { id: uuidv4(), name: "", epis: [{ id: uuidv4(), name: "", ca: "" }] },
     ]);
-  };
-
-  const handleUpdateActivityName = (atividadeId: string, name: string) => {
-    setActivities(
-      activities.map((atividade) =>
-        atividade.id === atividadeId ? { ...atividade, name: name } : atividade
-      )
-    );
   };
 
   const handleDeleteAtividade = (atividadeId: string) => {
